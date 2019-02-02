@@ -14,15 +14,15 @@ module.exports.from = function (localHost, localPort) {
                             }
                             let command = 'ncat -l ' + localHost + ' ' + localPort + ' --keep-open --sh-exec "ncat --proxy ' + proxyHost + ':' + proxyPort + ' --proxy-type ' + proxyType + ' ' + serverHost + ' ' + serverPort + '"';
                             console.log('Establishing tunnel: ' + command);
-                            let process = exec(command, (error, stdout, stderr) => {
+                            let childProcess = exec(command, (error, stdout, stderr) => {
                                 if (error) {
                                     throw error;
                                 }
                             });
                             tunnel = {
-                                process: process,
+                                process: childProcess,
                                 close: function () {
-                                    process.kill();
+                                    process.kill(childProcess.pid);
                                     cache.del(key);
                                 }
                             };
