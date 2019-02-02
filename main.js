@@ -1,4 +1,5 @@
 const cache = require('memory-cache');
+const treeKill = require('tree-kill');
 const {exec} = require('child_process');
 module.exports.from = function (localHost, localPort) {
     return {
@@ -21,9 +22,13 @@ module.exports.from = function (localHost, localPort) {
                             });
                             tunnel = {
                                 process: childProcess,
-                                close: function () {
-                                    process.kill(childProcess.pid);
-                                    cache.del(key);
+                                close: function (callback) {
+                                    treeKill(childProcess.pid, function (error) {
+                                        if (!error) {
+                                            cache.del(key);
+                                        }
+                                        callback(error);
+                                    });
                                 }
                             };
                             cache.put(key, tunnel);
