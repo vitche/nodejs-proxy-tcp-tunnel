@@ -13,6 +13,7 @@ module.exports.from = function (localHost, localPort) {
                                 return tunnel;
                             }
                             let command = 'ncat -l ' + localHost + ' ' + localPort + ' --keep-open --sh-exec "ncat --proxy ' + proxyHost + ':' + proxyPort + ' --proxy-type ' + proxyType + ' ' + serverHost + ' ' + serverPort + '"';
+                            console.log('Establishing tunnel: ' + command);
                             let process = exec(command, (error, stdout, stderr) => {
                                 if (error) {
                                     throw error;
