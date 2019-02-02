@@ -1,3 +1,4 @@
+const cache = require('memory-cache');
 const {exec} = require('child_process');
 module.exports.from = function (localHost, localPort) {
     return {
@@ -6,12 +7,22 @@ module.exports.from = function (localHost, localPort) {
                 to: function (serverHost, serverPort) {
                     return {
                         start: function () {
+                            let key = localHost + ':' + localPort;
+                            let tunnel = cache.get(key);
+                            if (tunnel) {
+                                return tunnel;
+                            }
                             let command = 'ncat -l ' + localHost + ' ' + localPort + ' --keep-open --sh-exec "ncat --proxy ' + proxyHost + ':' + proxyPort + ' --proxy-type ' + proxyType + ' ' + serverHost + ' ' + serverPort + '"';
-                            return exec(command, (error, stdout, stderr) => {
+                            let process = exec(command, (error, stdout, stderr) => {
                                 if (error) {
                                     throw error;
                                 }
                             });
+                            tunnel = {
+                                process: process
+                            };
+                            cache.put(key, tunnel);
+                            return tunnel;
                         }
                     }
                 }
