@@ -20,7 +20,11 @@ module.exports.from = function (localHost, localPort) {
                                 }
                             });
                             tunnel = {
-                                process: process
+                                process: process,
+                                close: function () {
+                                    process.kill();
+                                    cache.del(key);
+                                }
                             };
                             cache.put(key, tunnel);
                             return tunnel;
