@@ -8,6 +8,10 @@ module.exports = {
             .through('socks5', 'TODO: proxyHost', proxyPort)
             .to('TODO: serverHost', port)
             .start();
-        test.done();
+        setTimeout(function () {
+            tunnel.close(function () {
+                test.done();
+            });
+        }, 1000);
     }
 };

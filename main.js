@@ -1,6 +1,24 @@
 const cache = require('memory-cache');
-const treeKill = require('tree-kill');
+const psTree = require('ps-tree');
 const {exec} = require('child_process');
+var killTree = function (pid, signal, callback) {
+    signal = signal || 'SIGKILL';
+    psTree(pid, function (error, children) {
+        [pid].concat(
+            children.map(function (p) {
+                return p.PID;
+            })
+        ).forEach(function (tpid) {
+            try {
+                process.kill(tpid, signal)
+            }
+            catch (error) {
+                callback(error);
+            }
+        });
+        callback();
+    });
+};
 module.exports.from = function (localHost, localPort) {
     return {
         through: function (proxyType, proxyHost, proxyPort) {
@@ -16,14 +34,14 @@ module.exports.from = function (localHost, localPort) {
                             let command = 'ncat -l ' + localHost + ' ' + localPort + ' --keep-open --sh-exec "ncat --proxy ' + proxyHost + ':' + proxyPort + ' --proxy-type ' + proxyType + ' ' + serverHost + ' ' + serverPort + '"';
                             console.log('Establishing tunnel: ' + command);
                             let childProcess = exec(command, (error, stdout, stderr) => {
-                                if (error && 'SIGTERM' !== error.signal) {
+                                if (error && 'SIGKILL' !== error.signal) {
                                     throw error;
                                 }
                             });
                             tunnel = {
                                 process: childProcess,
                                 close: function (callback) {
-                                    treeKill(childProcess.pid, function (error) {
+                                    killTree(childProcess.pid, 'SIGKILL', function (error) {
                                         if (!error) {
                                             cache.del(key);
                                         }
