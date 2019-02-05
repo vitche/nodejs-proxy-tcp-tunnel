@@ -11,8 +11,7 @@ var killTree = function (pid, signal, callback) {
         ).forEach(function (tpid) {
             try {
                 process.kill(tpid, signal)
-            }
-            catch (error) {
+            } catch (error) {
                 callback(error);
             }
         });
@@ -32,7 +31,7 @@ module.exports.from = function (localHost, localPort) {
                                 return tunnel;
                             }
                             let command = 'ncat -l ' + localHost + ' ' + localPort + ' --keep-open --sh-exec "ncat --proxy ' + proxyHost + ':' + proxyPort + ' --proxy-type ' + proxyType + ' ' + serverHost + ' ' + serverPort + '"';
-                            console.log('Establishing tunnel: ' + command);
+                            console.log('Establishing tunnel: ' + command + "\n");
                             let childProcess = exec(command, (error, stdout, stderr) => {
                                 if (stdout) {
                                     console.log('Tunnel output: ' + stdout);
