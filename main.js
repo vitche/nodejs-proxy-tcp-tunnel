@@ -34,8 +34,11 @@ module.exports.from = function (localHost, localPort) {
                             let command = 'ncat -l ' + localHost + ' ' + localPort + ' --keep-open --sh-exec "ncat --proxy ' + proxyHost + ':' + proxyPort + ' --proxy-type ' + proxyType + ' ' + serverHost + ' ' + serverPort + '"';
                             console.log('Establishing tunnel: ' + command);
                             let childProcess = exec(command, (error, stdout, stderr) => {
-                                if (error && 'SIGKILL' !== error.signal) {
-                                    throw error;
+                                if (stdout) {
+                                    console.log('Tunnel output: ' + stdout);
+                                }
+                                if (stderr) {
+                                    console.log('Tunnel error: ' + stderr);
                                 }
                             });
                             tunnel = {
