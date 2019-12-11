@@ -1,9 +1,12 @@
 {
   "name": "nodejs-proxy-tcp-tunnel",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {},
   "main": "main.js",
+  "bin": {
+    "proxy-tcp-tunnel": "./cli.js"
+  },
   "devDependencies": {
     "nodeunit": "^0.11.3"
   },
