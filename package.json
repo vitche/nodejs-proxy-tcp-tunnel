@@ -7,10 +7,9 @@
   "bin": {
     "proxy-tcp-tunnel": "./cli.js"
   },
-  "devDependencies": {
-    "nodeunit": "^0.11.3"
-  },
   "dependencies": {
+    "@jest/globals": "^26.6.2",
+    "jest": "^26.6.3",
     "memory-cache": "^0.2.0",
     "ps-tree": "^1.2.0"
   }
