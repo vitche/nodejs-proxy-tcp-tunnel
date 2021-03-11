@@ -20,9 +20,25 @@ const killTree = function (pid, signal, callback) {
 };
 module.exports.from = function (localHost, localPort) {
   return {
-    through: function (proxyType, proxyHost, proxyPort) {
+    through: function (proxyType, proxyHost, proxyPort, proxyUser, proxyPassword) {
       if ("ssh" === proxyType) {
-        return {};
+        // TCP proxying through "SSH"
+        return {
+          to: function (serverHost, serverPort) {
+            return {
+              start: function () {
+                const command = `sshpass -p '${proxyPassword}' ssh -R \\*:${localPort}:${serverHost}:${serverPort} -N ${proxyUser}@${proxyHost} -p ${proxyPort}`;
+                console.log(command);
+                const tunnel = {
+                  process: undefined,
+                  close: () => {
+                  }
+                };
+                return tunnel;
+              }
+            };
+          }
+        };
       } else {
         // TCP proxying through "ncat"
         return {
