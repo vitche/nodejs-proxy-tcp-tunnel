@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "docker:build": "docker build -t vitche/shell-ssh-proxy .",
-    "docker:run": "docker run -dit -p 7443:22 --name shell-ssh-proxy vitche/shell-ssh-proxy"
+    "docker:run": "docker run -dit -p 7443:22 --name shell-ssh-proxy vitche/shell-ssh-proxy",
+    "docker:push": "docker push vitche/shell-ssh-proxy"
   },
   "main": "main.js",
   "bin": {
