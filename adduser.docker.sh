@@ -1,0 +1,1 @@
+docker exec -it shell-ssh-proxy adduser $1

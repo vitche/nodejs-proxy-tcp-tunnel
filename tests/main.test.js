@@ -15,3 +15,8 @@ describe("SOCKS5 proxy", () => {
     }, 1000);
   });
 });
+describe("SSH proxy", () => {
+  test("should start an SSH reverse port forwarding", (done) => {
+    done();
+  });
+});
