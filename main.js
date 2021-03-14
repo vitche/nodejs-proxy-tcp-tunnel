@@ -27,7 +27,7 @@ module.exports.from = function (localHost, localPort) {
           to: function (serverHost, serverPort) {
             return {
               start: function () {
-                const command = `sshpass -p '${proxyPassword}' ssh -R \\*:${localPort}:${serverHost}:${serverPort} -N ${proxyUser}@${proxyHost} -p ${proxyPort}`;
+                const command = `sshpass -p '${proxyPassword}' ssh -R ${serverPort}:${serverHost}:${localPort} -N ${proxyUser}@${proxyHost} -p ${proxyPort}`;
                 console.log(command);
                 const tunnel = {
                   process: undefined,
