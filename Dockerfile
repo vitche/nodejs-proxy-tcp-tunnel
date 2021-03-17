@@ -1,8 +1,12 @@
-FROM alpine:latest
+FROM ubuntu:latest
 
-RUN apk update
-RUN apk add openssh
-RUN echo -e "Port 22\nGatewayPorts yes\n" >> /etc/ssh/sshd_config
+RUN apt -y update
+RUN apt -y upgrade
+
+RUN mkdir /run/sshd
+
+RUN apt -y install openssh-server
+RUN echo "\nPort 22\nGatewayPorts yes\nAllowTcpForwarding yes\n" >> /etc/ssh/sshd_config
 RUN ssh-keygen -A
 
 EXPOSE 22
