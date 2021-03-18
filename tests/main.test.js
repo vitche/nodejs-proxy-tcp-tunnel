@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 describe("SOCKS5 proxy", () => {
   test("should start a SOCKS5 tunnel", (done) => {
     let port = 80;
@@ -15,14 +17,27 @@ describe("SOCKS5 proxy", () => {
     }, 1000);
   });
 });
+
 describe("SSH proxy", () => {
   test("should start an SSH reverse port forwarding", (done) => {
     let tunnelFactory = require('../main');
     let tunnel = tunnelFactory
-      .from(undefined, 5984)
-      .through("ssh", "34.239.11.167", 7443, "hysh", "pass@word1")
-      .to("0.0.0.0", 5984)
-      .start()
+      .from(
+        process.env.FROM_HOST,
+        process.env.FROM_PORT
+      )
+      .through(
+        process.env.PROXY_TYPE,
+        process.env.PROXY_HOST,
+        process.env.PROXY_PORT,
+        process.env.PROXY_USER,
+        process.env.PROXY_PASSWORD
+      )
+      .to(
+        process.env.SERVER_HOST,
+        process.env.SERVER_PORT
+      )
+      .start();
     done();
   });
 });
