@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "run": "node cli.js",
-    "docker:build": "docker build -t vitche/shell-ssh-proxy .",
-    "docker:run": "docker run -dit -p 7022:22 --name shell-ssh-proxy vitche/shell-ssh-proxy",
-    "docker:push": "docker push vitche/shell-ssh-proxy"
+    "docker:build:tunnel": "docker build -t vitche/shell-ssh-tunnel ./tunnel/.",
+    "docker:run:tunnel": "docker run -dit -p 7022:22 --name shell-ssh-proxy vitche/shell-ssh-tunnel",
+    "docker:push:tunnel": "docker push vitche/shell-ssh-tunnel"
   },
   "main": "main.js",
   "bin": {
