@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "run": "node cli.js",
-    "docker:build:tunnel": "docker build -t vitche/shell-ssh-tunnel ./tunnel/.",
+    "docker:build:tunnel": "docker build -t vitche/shell-ssh-tunnel -f ./tunnel/Dockerfile .",
     "docker:run:tunnel": "docker run -dit -p 7022:22 --name shell-ssh-proxy vitche/shell-ssh-tunnel",
-    "docker:push:tunnel": "docker push vitche/shell-ssh-tunnel"
+    "docker:push:tunnel": "docker push vitche/shell-ssh-tunnel",
+    "docker:build:replicator": "docker build -t vitche/shell-ssh-replicator -f ./replicator/Dockerfile .",
+    "docker:run:replicator": "docker run -dit --name shell-ssh-replicator vitche/shell-ssh-replicator",
+    "docker:push:replicator": "docker push vitche/shell-ssh-replicator"
   },
   "main": "main.js",
   "bin": {
