@@ -33,7 +33,7 @@ module.exports.from = function (localHost, localPort) {
               let command;
               if ("ssh" === proxyType) {
                 // TCP proxying through "SSH"
-                command = `sshpass -p '${proxyPassword}' ssh -R ${serverPort}:${serverHost}:${localPort} -N ${proxyUser}@${proxyHost} -p ${proxyPort}`;
+                command = `sshpass -p '${proxyPassword}' ssh -oStrictHostKeyChecking=no -v -R ${serverHost}:${serverPort}:${localHost}:${localPort} -N ${proxyUser}@${proxyHost} -p ${proxyPort}`;
               } else {
                 // TCP proxying through "ncat"
                 command = 'ncat -l ' + localHost + ' ' + localPort + ' --keep-open --sh-exec "ncat --proxy ' + proxyHost + ':' + proxyPort + ' --proxy-type ' + proxyType + ' ' + serverHost + ' ' + serverPort + '"';
